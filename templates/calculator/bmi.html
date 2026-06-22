@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}BMI Calculator{% endblock %}
+
+{% block content %}
+<div class="calc-grid">
+    <div>
+        <div class="card">
+            <h2>⚖️ BMI Calculator</h2>
+            
+            <form id="bmiForm">
+                <div class="form-group">
+                    <label for="bmiWeight">Weight (kg)</label>
+                    <input type="number" id="bmiWeight" step="0.1" min="1" max="500" placeholder="e.g., 70" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bmiHeight">Height (cm)</label>
+                    <input type="number" id="bmiHeight" step="0.1" min="50" max="300" placeholder="e.g., 175" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Calculate BMI</button>
+            </form>
+            
+            <div id="bmiResultBox" class="result-box">
+                <div class="result-number" id="bmiValue">0</div>
+                <div class="result-label">Your BMI</div>
+                <div id="bmiCategory" class="result-category">-</div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="bmi-scale">
+                        <span>Underweight</span>
+                        <span>Normal</span>
+                        <span>Overweight</span>
+                        <span>Obese</span>
+                    </div>
+                    <div class="bmi-scale-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <div class="card">
+            <div class="history-header">
+                <h2>📋 Recent History</h2>
+                <button id="clearHistory" class="btn-danger">Clear</button>
+            </div>
+            <div id="historyList">
+                {% if history %}
+                    {% for entry in history %}
+                        {% if entry.type == 'bmi' %}
+                        <div class="history-item" data-type="bmi">
+                            <span class="history-details">
+                                {{ entry.weight }}kg / {{ entry.height }}cm
+                            </span>
+                            <span class="history-result">{{ entry.bmi }}</span>
+                            <span class="history-category">{{ entry.category }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="history-empty">No BMI calculations yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

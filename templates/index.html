@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Calculator Suite{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to the Calculator Suite!</h2>
+    <p style="font-size: 1.1rem; color: #666; margin-bottom: 20px;">
+        Choose a calculator from the navigation above:
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+            <div style="font-size: 3rem;">➕</div>
+            <h3>Basic Calculator</h3>
+            <p style="color: #666;">Add, subtract, multiply, divide, and more</p>
+        </div>
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+            <div style="font-size: 3rem;">⚖️</div>
+            <h3>BMI Calculator</h3>
+            <p style="color: #666;">Check your Body Mass Index</p>
+        </div>
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+            <div style="font-size: 3rem;">🔄</div>
+            <h3>Unit Converter</h3>
+            <p style="color: #666;">Convert length, weight, and temperature</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

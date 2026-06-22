@@ -1,0 +1,74 @@
+/* Responsive Design */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card {
+        padding: 25px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .nav-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    
+    .nav-btn {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .history-result {
+        align-self: flex-start;
+    }
+    
+    .result-number {
+        font-size: 2rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    .nav-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+    
+    .nav-grid,
+    .btn-primary,
+    .btn-danger {
+        display: none;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}

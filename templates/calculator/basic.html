@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Basic Calculator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>➕ Basic Calculator</h2>
+    
+    <form id="basicForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="basicNum1">First Number</label>
+                <input type="number" id="basicNum1" step="any" placeholder="Enter a number" required>
+            </div>
+            <div class="form-group">
+                <label for="basicNum2">Second Number</label>
+                <input type="number" id="basicNum2" step="any" placeholder="Enter a number" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Operation</label>
+            <div class="ops-grid">
+                <button type="button" data-op="+" class="selected">+</button>
+                <button type="button" data-op="-">−</button>
+                <button type="button" data-op="*">×</button>
+                <button type="button" data-op="/">÷</button>
+                <button type="button" data-op="^">x^y</button>
+                <button type="button" data-op="%">%</button>
+            </div>
+            <input type="hidden" id="basicOperation" value="+">
+        </div>
+        
+        <button type="submit" class="btn-primary">Calculate</button>
+    </form>
+    
+    <div id="basicResultBox" class="result-box">
+        <div style="text-align: center;">
+            <div id="basicExpression" style="font-size: 1.2rem; color: #666;"></div>
+            <div id="basicResult" class="result-number">0</div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Operation button selection
+document.querySelectorAll('.ops-grid button').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.ops-grid button').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        document.getElementById('basicOperation').value = this.dataset.op;
+    });
+});
+</script>
+{% endblock %}

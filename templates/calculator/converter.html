@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Unit Converter{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>🔄 Unit Converter</h2>
+    
+    <form id="converterForm">
+        <div class="form-group">
+            <label for="convertCategory">Category</label>
+            <select id="convertCategory">
+                <option value="length">Length</option>
+                <option value="weight">Weight</option>
+                <option value="temperature">Temperature</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="convertValue">Value</label>
+            <input type="number" id="convertValue" step="any" placeholder="Enter value to convert" required>
+        </div>
+        
+        <div class="unit-select">
+            <div class="form-group">
+                <label for="convertFrom">From</label>
+                <select id="convertFrom">
+                    <option value="m">m</option>
+                    <option value="cm">cm</option>
+                    <option value="mm">mm</option>
+                    <option value="km">km</option>
+                    <option value="in">in</option>
+                    <option value="ft">ft</option>
+                    <option value="yd">yd</option>
+                    <option value="mi">mi</option>
+                </select>
+            </div>
+            
+            <div class="conversion-arrow">→</div>
+            
+            <div class="form-group">
+                <label for="convertTo">To</label>
+                <select id="convertTo">
+                    <option value="km">km</option>
+                    <option value="m">m</option>
+                    <option value="cm">cm</option>
+                    <option value="mm">mm</option>
+                    <option value="in">in</option>
+                    <option value="ft">ft</option>
+                    <option value="yd">yd</option>
+                    <option value="mi">mi</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-primary">Convert</button>
+    </form>
+    
+    <div id="convertResultBox" class="result-box">
+        <div style="text-align: center;">
+            <div style="font-size: 1.2rem; color: #666;">
+                <span id="convertFromLabel"></span> =
+            </div>
+            <div id="convertResult" class="result-number">0</div>
+            <div id="convertToLabel" style="color: #666;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

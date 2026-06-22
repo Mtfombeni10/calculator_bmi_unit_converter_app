@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}History{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="history-header">
+        <h2>📋 Full History</h2>
+        <div>
+            <button onclick="exportHistoryCSV()" class="btn-primary" style="width: auto; padding: 8px 16px; margin-right: 10px;">
+                Export CSV
+            </button>
+            <button id="clearHistory" class="btn-danger">Clear All</button>
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <button onclick="filterHistory('all')" class="nav-btn" style="padding: 5px 15px; font-size: 0.9rem;">All</button>
+        <button onclick="filterHistory('basic')" class="nav-btn" style="padding: 5px 15px; font-size: 0.9rem;">Basic</button>
+        <button onclick="filterHistory('bmi')" class="nav-btn" style="padding: 5px 15px; font-size: 0.9rem;">BMI</button>
+        <button onclick="filterHistory('conversion')" class="nav-btn" style="padding: 5px 15px; font-size: 0.9rem;">Conversion</button>
+    </div>
+    
+    <div id="historyList">
+        {% if history %}
+            {% for entry in history %}
+            <div class="history-item" data-type="{{ entry.type }}">
+                <span class="history-details">
+                    {% if entry.type == 'basic' %}
+                        {{ entry.expression }}
+                    {% elif entry.type == 'bmi' %}
+                        BMI: {{ entry.weight }}kg / {{ entry.height }}cm
+                    {% elif entry.type == 'conversion' %}
+                        {{ entry.from_value }} {{ entry.from_unit }} → {{ entry.to_unit }}
+                    {% endif %}
+                </span>
+                <span class="history-result">
+                    {% if entry.type == 'basic' %}
+                        = {{ entry.result }}
+                    {% elif entry.type == 'bmi' %}
+                        {{ entry.bmi }}
+                    {% elif entry.type == 'conversion' %}
+                        {{ entry.result }}
+                    {% endif %}
+                </span>
+                {% if entry.category %}
+                <span class="history-category">{{ entry.category }}</span>
+                {% endif %}
+                <!-- FIX: Using the format_timestamp filter -->
+                <span class="history-time" style="font-size: 0.8rem; color: #999;">
+                    {{ entry.timestamp|format_timestamp }}
+                </span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="history-empty">No calculations yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Filter history by type
+function filterHistory(type) {
+    const items = document.querySelectorAll('.history-item');
+    items.forEach(item => {
+        if (type === 'all' || item.dataset.type === type) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// Export history as CSV
+function exportHistoryCSV() {
+    const items = document.querySelectorAll('.history-item');
+    if (items.length === 0) {
+        alert('No history to export');
+        return;
+    }
+    
+    let csv = 'Type,Details,Result,Category,Time\n';
+    items.forEach(item => {
+        const details = item.querySelector('.history-details')?.textContent || '';
+        const result = item.querySelector('.history-result')?.textContent || '';
+        const category = item.querySelector('.history-category')?.textContent || '';
+        const type = item.dataset.type || '';
+        const time = item.querySelector('.history-time')?.textContent || '';
+        csv += `${type},"${details}","${result}","${category}","${time}"\n`;
+    });
+    
+    // Download CSV
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calculator_history.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+// Clear history
+document.addEventListener('DOMContentLoaded', function() {
+    const clearBtn = document.getElementById('clearHistory');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', async function() {
+            if (confirm('Are you sure you want to clear all history?')) {
+                try {
+                    const response = await fetch('/api/history/clear', {
+                        method: 'POST'
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        const historyList = document.getElementById('historyList');
+                        if (historyList) {
+                            historyList.innerHTML = '<p class="history-empty">No calculations yet</p>';
+                        }
+                    }
+                } catch (error) {
+                    alert('Error clearing history: ' + error.message);
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
